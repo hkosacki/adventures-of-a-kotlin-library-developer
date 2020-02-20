@@ -17,3 +17,8 @@
 .monospace {
     font-family: monospace;
 }
+
+.inline-code {
+    font-family: monospace;
+    color: #e7ad52;
+}

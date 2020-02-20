@@ -80,6 +80,27 @@
                         <img src="img/01-dependencies-kotlin-question-mark.png"/>
                     </section>
                     <section>
+                        <h4>What affects the binary compatibility?</h4>
+                        <ul style="list-style-type:none">
+                        <li class="fragment fade-in">✅ internal, non-exposed changes</li>
+                        <li class="fragment fade-in">✅ public API extensions</li>
+                        <li class="fragment fade-in">❌ almost any public API deletions</li>
+                    </ul>
+                    </section>
+                    <section>
+                        <h4>What exactly breaks the compatibility - eg.</h4>
+                        <ul>
+                            <li class="fragment fade-in">Deleting a public API (class, interface, enum)</li>
+                            <li class="fragment fade-in">Deleting a public package</li>
+                            <li class="fragment fade-in">Hiding a public API's member (field, method, etc.)</li>
+                            <li class="fragment fade-in">Renaming a public method or class member</li>
+                            <li class="fragment fade-in">Adding abstract methods in public API</li>
+                            <li class="fragment fade-in">Adding parameters to method calls</li>
+                            <li class="fragment fade-in">Changing the <span class="inline-code">final</span> and <span class="inline-code">static</span> modifiers</li>
+                            <li class="fragment fade-in"><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2" target="_blank">…and many, many more</a></li>
+                        </ul>
+                    </section>
+                    <section>
                         <pre>
                             <code class="kotlin" data-trim data-noescape>
                             // TODO: put your code here…
@@ -143,6 +164,7 @@
                         <li><a href="https://jakewharton.com/public-api-challenges-in-kotlin/" target="_blank">Public API challenges in Kotlin</a>, Jake Wharton</li>            
                         <li><a href="http://www.informit.com/articles/article.aspx?p=32088" target="_blank">Java Binary Compatibility</a>, Joshua Engel</li>            
                         <li><a href="http://www.informit.com/articles/article.aspx?p=98134" target="_blank">Java Binary Compatibility Part 2</a>, Joshua Engel </li>            
+                        <li><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2#Evolving_API_interfaces_-_API_type_members" target="_blank">Evolving Java-based APIs 2</a>, Eclipse Wiki</li>            
                         <li><a href="https://leanpub.com/effectivekotlin" target="_blank">Effective Kotlin</a>, Marcin Moskała</li>            
                     </ul>
                     <p>Created with <a href="https://revealjs.com/" target="_blank">Reveal.js</a></p>
