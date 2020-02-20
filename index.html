@@ -1,208 +1,270 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <title>The Adventures of a Kotlin-based Library Developer</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <link rel="stylesheet" href="css/reset.css">
-        <link rel="stylesheet" href="css/reveal.css">
-        <link rel="stylesheet" href="css/theme/night.css">
-        <link rel="stylesheet" href="css/custom.css">
+    <title>The Adventures of a Kotlin-based Library Developer</title>
 
-        <!-- Theme used for syntax highlighting of code -->
-        <link rel="stylesheet" href="lib/css/darkula.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/night.css">
+    <link rel="stylesheet" href="css/custom.css">
 
-        <!-- Printing and PDF exports -->
-        <script>
-            var link = document.createElement( 'link' );
-            link.rel = 'stylesheet';
-            link.type = 'text/css';
-            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-            document.getElementsByTagName( 'head' )[0].appendChild( link );
-        </script>
-    </head>
-    <body>
-        <div class="reveal">
-            <div class="slides">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/darkula.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h2>The Adventures of a Kotlin-based Library Developer</h2>
+                <h4>Hubert Kosacki</h4>
+            </section>
+
+            <!-- INTRO -->
+
+            <section>
                 <section>
-                    <h2>The Adventures of a Kotlin-based Library Developer</h2>
-                    <h4>Hubert Kosacki</h4>
+                    <h3>Kotlin ❤️ Java</h3>
                 </section>
-                
-                <!-- INTRO -->
-                
                 <section>
-                    <section>
-                        <h3>Kotlin ❤️ Java</h3>
-                    </section>
-                    <section>
-                        <h3>Java ❤️ Kotlin</h3>
-                        ❓<br />
-                        🤔
-                    </section>
-                    <section>
-                        <img src="img/00-jar-icon.png" class="fragment fade-in" style="background: none; border: none; box-shadow: none; vertical-align: middle; "/>
-                        <img src="img/00-Kotlin-transform.png" class="fragment fade-in" style="background: none; border: none; box-shadow: none; vertical-align: middle; "/>
-                        <span class="fragment fade-in" style="font-size: 64px; vertical-align: middle;">❓</span>
+                    <h3>Java ❤️ Kotlin</h3>
+                    ❓<br />
+                    🤔
+                </section>
+                <section>
+                    <img src="img/00-jar-icon.png" class="fragment fade-in"
+                        style="background: none; border: none; box-shadow: none; vertical-align: middle; " />
+                    <img src="img/00-Kotlin-transform.png" class="fragment fade-in"
+                        style="background: none; border: none; box-shadow: none; vertical-align: middle; " />
+                    <span class="fragment fade-in" style="font-size: 64px; vertical-align: middle;">❓</span>
 
-                        <span class="fragment fade-in">
-                            <span class="source">Kotlin logo taken from: https://resources.jetbrains.com/storage/products/kotlin/docs/kotlin_logos.zip</span>
-                            <span class="source">The JAR icon taken from: http://www.icons101.com/icons/12/iOS_78_style_icons_for_Java_by_ChilliTrav/128/jar.png</span>
+                    <span class="fragment fade-in">
+                        <span class="source">Kotlin logo taken from:
+                            https://resources.jetbrains.com/storage/products/kotlin/docs/kotlin_logos.zip</span>
+                        <span class="source">The JAR icon taken from:
+                            http://www.icons101.com/icons/12/iOS_78_style_icons_for_Java_by_ChilliTrav/128/jar.png</span>
                     </span>
-                    </section>
                 </section>
-                
-                <!-- PART 1 - Binary compatibility-->
+            </section>
+
+            <!-- PART 1 - Binary compatibility-->
+            <section>
                 <section>
-                    <section>
-                        <h3>Binary compatibility</h3>
-                    </section>
-                    <section>
-                        <h4>Binary compatibility - what's this?</h4>
-                        <p class="fragment fade-in">
-                            <img src="img/01-raw-meat.jpg" />
-                            <span class="source">https://pxhere.com/en/photo/1365486</span>
-                        </p>
-                    </section>
-                    <section>
-                        <p>It's about replacing the Java compiled classes without recompiling their consumers</p>
-                    </section>
-                    <section data-transition="slide none">
-                        <img src="img/01-dependencies-java.png"/>
-                    </section>
-                    <section data-transition="none">
-                        <img src="img/01-dependencies-kotlin.png"/>
-                    </section>
-                    <section data-transition="none">
-                        <img src="img/01-dependencies-kotlin-question-mark.png"/>
-                    </section>
-                    <section>
-                        <h4>What affects the binary compatibility?</h4>
-                        <ul style="list-style-type:none">
+                    <h3>Binary compatibility</h3>
+                </section>
+                <section>
+                    <h4>Binary compatibility - what's this?</h4>
+                    <p class="fragment fade-in">
+                        <img src="img/01-raw-meat.jpg" />
+                        <span class="source">https://pxhere.com/en/photo/1365486</span>
+                    </p>
+                </section>
+                <section>
+                    <p>It's about replacing the Java compiled classes without recompiling their consumers</p>
+                </section>
+                <section data-transition="slide none">
+                    <img src="img/01-dependencies-java.png" />
+                </section>
+                <section data-transition="none">
+                    <img src="img/01-dependencies-kotlin.png" />
+                </section>
+                <section data-transition="none">
+                    <img src="img/01-dependencies-kotlin-question-mark.png" />
+                </section>
+                <section>
+                    <h4>What affects the binary compatibility?</h4>
+                    <ul style="list-style-type:none">
                         <li class="fragment fade-in">✅ internal, non-exposed changes</li>
                         <li class="fragment fade-in">✅ public API extensions</li>
                         <li class="fragment fade-in">❌ almost any public API deletions</li>
                     </ul>
-                    </section>
-                    <section>
-                        <h4>What exactly breaks the compatibility - eg.</h4>
-                        <ul>
-                            <li class="fragment fade-in">Deleting a public API (class, interface, enum)</li>
-                            <li class="fragment fade-in">Deleting a public package</li>
-                            <li class="fragment fade-in">Hiding a public API's member (field, method, etc.)</li>
-                            <li class="fragment fade-in">Renaming a public method or class member</li>
-                            <li class="fragment fade-in">Adding abstract methods in public API</li>
-                            <li class="fragment fade-in">Adding parameters to method calls</li>
-                            <li class="fragment fade-in">Changing the <span class="inline-code">final</span> and <span class="inline-code">static</span> modifiers</li>
-                            <li class="fragment fade-in"><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2" target="_blank">…and many, many more</a></li>
-                        </ul>
-                    </section>
-                    <section>
-                        <pre>
-                            <code class="kotlin" data-trim data-noescape>
-                            // TODO: put your code here…
-                            </code>
-                        </pre>
-                    </section>
-                    <section>
-                        <h4>Enjoy your raw stuff ;)</h4>
-                        <p class="fragment fade-in">
-                        <img src="img/01-tartare.jpeg" />
-                        <span class="source">https://pxhere.com/en/photo/643053</span>
-                        </p>
-                    </section>
                 </section>
-                
-                <!-- PART 2 - Kotlin traps -->
                 <section>
-                    <section>
-                        <h3>Kotlin traps</h3>
-                    </section>
-                    <section>
-                        <h4>Named arguments</h4>
-                    </section>
-                    <section>
-                        <h4>Data classes</h4>
-                        …and their members' order
-                    </section>
-                    <section> 
-                        <h4>Destructuring declarations</h4>
-                        Highly related to the previous one
-                        <pre>
-                            <code class="kotlin" data-trim data-noescape>
-                            
-                            </code>
-                        </pre>
-                    </section>
-                    <section> 
-                        <h4>Static members</h4>
-                        
-                        <pre>
-                            <code class="kotlin" data-trim data-noescape>
-                            
-                            </code>
-                        </pre>
-                    </section>
-               </section>
-
-                <!-- APPENDIX - semantic versioning -->
-                <section>
-                    <h4>Appendix: Semantic versioning</h4>
-                    <p class="big monospace">
-                        <span class="fragment fade-in-then-semi-out">x</span>.<span class="fragment fade-in-then-semi-out">y</span>.<span class="fragment fade-in-then-semi-out">z</span>
-                    </p>
-                    <p class="monospace">
-                        <span class="fragment fade-in">major</span><span class="fragment fade-in">.minor</span><span class="fragment fade-in">.patch</span>
-                    </p>
-                    <br />
-                    <p class="fragment fade-in monospace">1.0.0 → 1.0.2 ✅</p>
-                    <p class="fragment fade-in monospace">1.0.0 → 1.1.0 ✅</p>
-                    <p class="fragment fade-in monospace">1.9.1 → 2.0.0 ❌</p>
-                </section>
-
-                <!-- Resources -->
-                <section>
-                    <h3>Resources</h3>
+                    <h4>What exactly breaks the compatibility - eg.</h4>
                     <ul>
-                        <li><a href="https://jakewharton.com/public-api-challenges-in-kotlin/" target="_blank">Public API challenges in Kotlin</a>, Jake Wharton</li>            
-                        <li><a href="http://www.informit.com/articles/article.aspx?p=32088" target="_blank">Java Binary Compatibility</a>, Joshua Engel</li>            
-                        <li><a href="http://www.informit.com/articles/article.aspx?p=98134" target="_blank">Java Binary Compatibility Part 2</a>, Joshua Engel </li>            
-                        <li><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2#Evolving_API_interfaces_-_API_type_members" target="_blank">Evolving Java-based APIs 2</a>, Eclipse Wiki</li>            
-                        <li><a href="https://leanpub.com/effectivekotlin" target="_blank">Effective Kotlin</a>, Marcin Moskała</li>            
+                        <li class="fragment fade-in">Deleting a public API (class, interface, enum)</li>
+                        <li class="fragment fade-in">Deleting a public package</li>
+                        <li class="fragment fade-in">Hiding a public API's member (field, method, etc.)</li>
+                        <li class="fragment fade-in">Renaming a public method or class member</li>
+                        <li class="fragment fade-in">Adding abstract methods in public API</li>
+                        <li class="fragment fade-in">Adding parameters to method calls</li>
+                        <li class="fragment fade-in">Changing the <span class="inline-code">final</span> and <span
+                                class="inline-code">static</span> modifiers</li>
+                        <li class="fragment fade-in"><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2"
+                                target="_blank">…and many, many more</a></li>
                     </ul>
-                    <p>Created with <a href="https://revealjs.com/" target="_blank">Reveal.js</a></p>
                 </section>
-
-                <!-- ENDING -->
-                
                 <section>
-                    <h3>THE END</h3>
-                    <h6>Thank you for the attention!</h6>
-                    <img src="img/99-lqr-link.png"/>
-                    <span class="source">https://hkosacki.github.io/adventures-of-a-kotlin-library-developer/#/</span><br />
-                    <span style="margin-right: 50px;"><img class="inline" src="img/99-github-6-64.png"/><a href="https://github.com/hkosacki/" target="_blank">hkosacki</a></span>
-                    <span><img class="inline" src="img/99-twitter-64.png"/><a href="https://twitter.com/hkosacki" target="_blank">@hkosacki</a></span>
+                    <h4>Enjoy your raw stuff ;)</h4>
+                    <img src="img/01-tartare.jpeg" />
+                    <span class="source">https://pxhere.com/en/photo/643053</span>
                 </section>
-            </div>
+                <section>
+                    <h4>Now, what Kotlin conversion can break?</h4>
+                </section>
+            </section>
+
+            <!-- PART 2 - Kotlin traps -->
+            <section>
+                <section>
+                    <h3>Kotlin traps</h3>
+                </section>
+                <section>
+                    <h4>Named arguments</h4>
+                    <p>Java: Renaming formal parameter name is binary compatible</p>
+                    <p>Kotlin: 💥 not anymore‼️</p>
+                    <p>Named arguments become a part of API</p>
+                </section>
+                <section>
+                    <pre>
+                        <code class="kotlin" data-trim data-noescape data-line-numbers>
+                            fun someLongParamsListFun(
+                                alpha: Any,
+                                bravo: Boolean,
+                                charlie: Char,
+                                delta: Double,
+                                echo: Any,
+                                foxtrot: Float
+                            ): Int {
+                                return (delta + foxtrot).toInt()
+                            }
+                                
+                            val result = 
+                                someLongParamsListFun(Unit, false, 'z', 3.0, Unit, 0.4f)
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <pre>
+                        <code class="kotlin" data-trim data-noescape data-line-numbers>
+                            val result2a = someLongParamsListFun(
+                                alpha = Unit,
+                                bravo = false,
+                                charlie = 'z',
+                                delta = 3.0,
+                                echo = Unit,
+                                foxtrot = 0.4f
+                            )
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <pre>
+                        <code class="kotlin" data-trim data-noescape data-line-numbers="4,6|7">
+                            val result2b = someLongParamsListFun(
+                                foxtrot = 0.4f,
+                                echo = Unit,
+                                charlie = 'z',
+                                delta = 3.0,
+                                bravo = false,
+                                alpha = Unit)
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h4>Data classes</h4>
+                    …and their members' order
+                </section>
+                <section>
+                    <h4>Destructuring declarations</h4>
+                    Highly related to the previous one
+                    <pre>
+                                        <code class="kotlin" data-trim data-noescape>
+                                        
+                                        </code>
+                                    </pre>
+                </section>
+                <section>
+                    <h4>Static members</h4>
+            
+                    <pre>
+                                        <code class="kotlin" data-trim data-noescape>
+                                        
+                                        </code>
+                                    </pre>
+                </section>
+            </section>
+
+            <!-- APPENDIX - semantic versioning -->
+            <section>
+                <h4>Appendix: Semantic versioning</h4>
+                <p class="big monospace">
+                    <span class="fragment fade-in-then-semi-out">x</span>.<span
+                        class="fragment fade-in-then-semi-out">y</span>.<span
+                        class="fragment fade-in-then-semi-out">z</span>
+                </p>
+                <p class="monospace">
+                    <span class="fragment fade-in">major</span><span class="fragment fade-in">.minor</span><span
+                        class="fragment fade-in">.patch</span>
+                </p>
+                <br />
+                <p class="fragment fade-in monospace">1.0.0 → 1.0.2 ✅</p>
+                <p class="fragment fade-in monospace">1.0.0 → 1.1.0 ✅</p>
+                <p class="fragment fade-in monospace">1.9.1 → 2.0.0 ❌</p>
+            </section>
+
+            <!-- Resources -->
+            <section>
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://jakewharton.com/public-api-challenges-in-kotlin/" target="_blank">Public API
+                            challenges in Kotlin</a>, Jake Wharton</li>
+                    <li><a href="http://www.informit.com/articles/article.aspx?p=32088" target="_blank">Java Binary
+                            Compatibility</a>, Joshua Engel</li>
+                    <li><a href="http://www.informit.com/articles/article.aspx?p=98134" target="_blank">Java Binary
+                            Compatibility Part 2</a>, Joshua Engel </li>
+                    <li><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2#Evolving_API_interfaces_-_API_type_members"
+                            target="_blank">Evolving Java-based APIs 2</a>, Eclipse Wiki</li>
+                    <li><a href="https://leanpub.com/effectivekotlin" target="_blank">Effective Kotlin</a>, Marcin
+                        Moskała</li>
+                </ul>
+                <p>Created with <a href="https://revealjs.com/" target="_blank">Reveal.js</a></p>
+            </section>
+
+            <!-- ENDING -->
+
+            <section>
+                <h3>THE END</h3>
+                <h6>Thank you for the attention!</h6>
+                <img src="img/99-lqr-link.png" />
+                <span class="source">https://hkosacki.github.io/adventures-of-a-kotlin-library-developer/#/</span><br />
+                <span style="margin-right: 50px;"><img class="inline" src="img/99-github-6-64.png" /><a
+                        href="https://github.com/hkosacki/" target="_blank">hkosacki</a></span>
+                <span><img class="inline" src="img/99-twitter-64.png" /><a href="https://twitter.com/hkosacki"
+                        target="_blank">@hkosacki</a></span>
+            </section>
         </div>
+    </div>
 
-        <script src="js/reveal.js"></script>
+    <script src="js/reveal.js"></script>
 
-        <script>
-            // More info about config & dependencies:
-            // - https://github.com/hakimel/reveal.js#configuration
-            // - https://github.com/hakimel/reveal.js#dependencies
-            Reveal.initialize({
-                hash: true,
-                dependencies: [
-                    { src: 'plugin/markdown/marked.js' },
-                    { src: 'plugin/markdown/markdown.js' },
-                    { src: 'plugin/highlight/highlight.js' },
-                    { src: 'plugin/notes/notes.js', async: true }
-                ]
-            });
-        </script>
-    </body>
+    <script>
+        // More info about config & dependencies:
+        // - https://github.com/hakimel/reveal.js#configuration
+        // - https://github.com/hakimel/reveal.js#dependencies
+        Reveal.initialize({
+            hash: true,
+            dependencies: [
+                { src: 'plugin/markdown/marked.js' },
+                { src: 'plugin/markdown/markdown.js' },
+                { src: 'plugin/highlight/highlight.js' },
+                { src: 'plugin/notes/notes.js', async: true }
+            ]
+        });
+    </script>
+</body>
+
 </html>
