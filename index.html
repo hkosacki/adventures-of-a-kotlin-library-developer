@@ -174,19 +174,100 @@
                 </section>
                 <section>
                     <h4>Data classes</h4>
-                    …and their members' order
                 </section>
                 <section>
-                    <h4>Destructuring declarations</h4>
-                    Highly related to the previous one
+                    <h4>Kotlin <span class="inline-code">data class</span></h4>
+                    <ul>
+                        <li class="fragment fade-in">POJO on steroids</li>
+                        <li class="fragment fade-in">Autogeneration of <span class="inline-code">equals()</span> and <span class="inline-code">hashCode()</span></li>
+                        <li class="fragment fade-in">Destructuring - <span class="inline-code">componentN()</span> functions</span></li>
+                        <li class="fragment fade-in"><span class="inline-code">copy()</span> function (with default parameters)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4><span class="inline-code">data class</span> - how to extend safely?</h4>
+                    <ul>
+                        <li class="fragment fade-in">Put new parameters at the end (Destructuring)</li>
+                        <li class="fragment fade-in">Make these parameters optional - provide a default value</li>
+                        <li class="fragment fade-in">Put the <span class="inline-code">@JvmOverloads</span> annotation on the constructor</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4><span class="inline-code">data class</span> - how to extend safely?</h4>
                     <pre><code class="kotlin" data-trim data-noescape>
-                        
+                        data class Data <span class="fragment fade-in" data-fragment-index=3>@JvmOverloads constructor</span> (
+                            val yankee: Boolean,
+                            val xray: Float<span class="fragment fade-in" data-fragment-index=1>,
+                            val zulu: String</span><span class="fragment fade-in" data-fragment-index=2>? = null</span>
+                        )
                     </code></pre>
+                    <p class="fragment fade-in">💥<span class="inline-code">copy()</span> function will get changed anyawy</p>
+                    <br />
+                    <p class="fragment fade-in">🤔 Should we resign from using data classes at all❓</p>
                 </section>
                 <section>
                     <h4>Static members</h4>
-                    <pre><code class="kotlin" data-trim data-noescape>
+                    <pre><code class="java" data-trim data-noescape>
+                        public class Util {
+                            public static final int RESULT = 4;
+                            public static int PENDING_VALUE = 0;
                         
+                            public static int getRandomNumber(){
+                                return 4; // chosen by a fair dice roll
+                                          // guaranteed to be random
+                            }
+                        }
+                    </code></pre>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        public class UtilConsumer {
+                            public void printRollResult(){
+                                System.out.println(Util.getRandomNumber());
+                            }
+                        }
+                    </code></pre>
+                    <p class="source">Inspired by <a href="https://xkcd.com/221/" target="_blank">https://xkcd.com/221/</a></p>
+                </section>
+                <section>
+                    <h4>Static functions</h4>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        object Util { // kt
+                            const val RESULT = 4
+
+                            var PENDING_VALUE = 0
+                            <span class="fragment fade-in" data-fragment-index=3>@JvmStatic</span>
+                            val randomNumber: Int
+                                get() = 4 // chosen by a fair dice roll
+                                          // guaranteed to be random
+                        }
+                    </code></pre>
+                    <pre class="fragment fade-in" data-fragment-index=1><code class="kotlin" data-trim data-noescape>
+                        public class UtilConsumer { // java
+                            public void printRollResult(){
+                                System.out.println(Util<span class="fragment fade-in" data-fragment-index=2><span class="fragment fade-out" data-fragment-index=4>.INSTANCE</span></span>.getRandomNumber());
+                            }
+                        }
+                    </code></pre>
+                </section>
+                <section>
+                    <h4>Static fields/properties</h4>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        object Util { // kt
+                            const val RESULT = 4
+                            <span class="fragment fade-in" data-fragment-index=3>@JvmField</span>
+                            var PENDING_VALUE = 0
+                            @JvmStatic
+                            val randomNumber: Int
+                                get() = 4 // chosen by a fair dice roll
+                                          // guaranteed to be random
+                        }
+                    </code></pre>
+                    <pre class="fragment fade-in" data-fragment-index=1><code class="kotlin" data-trim data-noescape>
+                        public class UtilConsumer { // java
+                            public void printRollResult(){
+                                System.out.println(Util.getRandomNumber() 
+                                    + Util<span class="fragment fade-in" data-fragment-index=2><span class="fragment fade-out" data-fragment-index=4>.INSTANCE</span></span>.PENDING_VALUE <span class="fragment fade-in" data-fragment-index=5>+ Utils.RESULT</span>);
+                            }
+                        }
                     </code></pre>
                 </section>
             </section>
