@@ -9,3 +9,11 @@
     border: none;
     vertical-align: middle; 
 }
+
+.big {
+    font-size: 96pt;
+}
+
+.monospace {
+    font-family: monospace;
+}
