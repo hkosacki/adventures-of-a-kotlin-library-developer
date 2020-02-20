@@ -113,24 +113,26 @@
                     <span class="source">https://pxhere.com/en/photo/643053</span>
                 </section>
                 <section>
-                    <h4>Now, what Kotlin conversion can break?</h4>
+                    <h4>Now, what a <span style="font-style: italic;">simple</span> Kotlin conversion can break?</h4>
                 </section>
             </section>
 
             <!-- PART 2 - Kotlin traps -->
             <section>
                 <section>
-                    <h3>Kotlin traps</h3>
+                    <h3>The Kotlin traps</h3>
                 </section>
                 <section>
                     <h4>Named arguments</h4>
-                    <p>Java: Renaming formal parameter name is binary compatible</p>
-                    <p>Kotlin: 💥 not anymore‼️</p>
-                    <p>Named arguments become a part of API</p>
+                    <br />
+                    <p class="fragment fade-in">Java:<br />Renaming parameter name <span class="fragment highlight-green">is binary compatible</span></p>
+                    <br />
+                    <p class="fragment fade-in">Kotlin:<br />💥 <span class="fragment highlight-red">not anymore‼️</span></p>
+                    <br />
+                    <p class="fragment fade-in">Named arguments <u>become a part of API</u></p>
                 </section>
                 <section>
-                    <pre>
-                        <code class="kotlin" data-trim data-noescape data-line-numbers>
+                    <pre><code class="kotlin" data-trim data-noescape data-line-numbers>
                             fun someLongParamsListFun(
                                 alpha: Any,
                                 bravo: Boolean,
@@ -141,15 +143,13 @@
                             ): Int {
                                 return (delta + foxtrot).toInt()
                             }
-                                
-                            val result = 
-                                someLongParamsListFun(Unit, false, 'z', 3.0, Unit, 0.4f)
-                        </code>
-                    </pre>
+                    </code></pre>
                 </section>
                 <section>
-                    <pre>
-                        <code class="kotlin" data-trim data-noescape data-line-numbers>
+                    <pre><code class="kotlin" data-trim data-noescape data-line-numbers="1-2|4-11|0">
+                            val result = 
+                                someLongParamsListFun(Unit, false, 'z', 3.0, Unit, 0.4f)    
+                            
                             val result2a = someLongParamsListFun(
                                 alpha = Unit,
                                 bravo = false,
@@ -158,21 +158,19 @@
                                 echo = Unit,
                                 foxtrot = 0.4f
                             )
-                        </code>
-                    </pre>
+                    </code></pre>
                 </section>
                 <section>
-                    <pre>
-                        <code class="kotlin" data-trim data-noescape data-line-numbers="4,6|7">
+                    <pre><code class="kotlin" data-trim data-noescape data-line-numbers="0|2-7">
                             val result2b = someLongParamsListFun(
                                 foxtrot = 0.4f,
                                 echo = Unit,
                                 charlie = 'z',
                                 delta = 3.0,
                                 bravo = false,
-                                alpha = Unit)
-                        </code>
-                    </pre>
+                                alpha = Unit
+                            )
+                    </code></pre>
                 </section>
                 <section>
                     <h4>Data classes</h4>
@@ -181,20 +179,15 @@
                 <section>
                     <h4>Destructuring declarations</h4>
                     Highly related to the previous one
-                    <pre>
-                                        <code class="kotlin" data-trim data-noescape>
-                                        
-                                        </code>
-                                    </pre>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        
+                    </code></pre>
                 </section>
                 <section>
                     <h4>Static members</h4>
-            
-                    <pre>
-                                        <code class="kotlin" data-trim data-noescape>
-                                        
-                                        </code>
-                                    </pre>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        
+                    </code></pre>
                 </section>
             </section>
 
