@@ -107,15 +107,36 @@
                 </section>
                 <section>
                     <p>It's about replacing the Java compiled classes without recompiling their consumers</p>
+                    <aside class="notes" data-markdown>
+                        Although it sounds more seriously, it's all about…
+
+                        Let's have a look, what does it mean in practice.
+                    </aside>
                 </section>
                 <section data-transition="slide none">
                     <img src="img/01-dependencies-java.png" />
+                    <aside class="notes" data-markdown>
+                        Android project setup demo
+                        * a mobile meetup
+                        * I'm originating from Android development
+                        
+                        Assume we have a project that has 2 dependencies, which one of is transitive:
+                        * it needs to be included in the project anyways
+                        * we want to kotlinize this library
+                    </aside>
                 </section>
                 <section data-transition="none">
                     <img src="img/01-dependencies-kotlin.png" />
+                    <aside class="notes" data-markdown>
+                        * both libraries are compiled
+                        * they are linked in RT
+                    </aside>
                 </section>
                 <section data-transition="none">
                     <img src="img/01-dependencies-kotlin-question-mark.png" />
+                    <aside class="notes" data-markdown>
+                        Knowing that Kotlin does some things automagically, we need to be aware of what binary compatibility requires to be fulfilled.
+                    </aside>
                 </section>
                 <section>
                     <h4>What affects the binary compatibility?</h4>
@@ -124,21 +145,37 @@
                         <li class="fragment fade-in">✅ public API extensions</li>
                         <li class="fragment fade-in">❌ almost any public API deletions</li>
                     </ul>
+                    <aside class="notes" data-markdown>
+                        ✅ - safe
+
+                        ❌ - unsafe
+                    </aside>
                 </section>
                 <section>
                     <h4>What exactly breaks the compatibility - eg.</h4>
-                    <ul>
+                    <ol>
                         <li class="fragment fade-in">Deleting a public API (class, interface, enum)</li>
                         <li class="fragment fade-in">Deleting a public package</li>
                         <li class="fragment fade-in">Hiding a public API's member (field, method, etc.)</li>
-                        <li class="fragment fade-in">Renaming a public method or class member</li>
                         <li class="fragment fade-in">Adding abstract methods in public API</li>
+                        <li class="fragment fade-in">Renaming a public method or class member</li>
                         <li class="fragment fade-in">Adding parameters to method calls</li>
                         <li class="fragment fade-in">Changing the <span class="inline-code">final</span> and <span
                                 class="inline-code">static</span> modifiers</li>
                         <li class="fragment fade-in"><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2"
                                 target="_blank">…and many, many more</a></li>
-                    </ul>
+                    </ol>
+                    <aside class="notes" data-markdown>
+                        Let's have a look at some examples:
+                        1. rather obvious
+                        1. no questions - just a bit more nuclear than 1.
+                        1. make private/protected - the existing references will fail
+                        1. an abstract method will be not implemented in existing implementations
+                        1. signature change - the existing references will fail
+                        1. signature change - same as above
+                        1. change `static` always produces errors, while adding `final` might break
+                        1. This is only an excerpt, see this resource for more insights
+                    </aside>
                 </section>
                 <section>
                     <h5>The rule of thumb</h5>
@@ -149,6 +186,9 @@
                     <h4>Enjoy your raw stuff ;)</h4>
                     <img src="img/01-tartare.jpeg" />
                     <span class="source">https://pxhere.com/en/photo/643053</span>
+                    <aside class="notes" data-markdown>
+                        Knowing all of that, we can leverage our findings and prepare a nice tartare out of the served raw meat ;)
+                    </aside>
                 </section>
                 <section>
                     <h4>Now, what a <span style="font-style: italic;">simple</span> Kotlin conversion can break?</h4>
@@ -182,6 +222,9 @@
                                 return (delta + foxtrot).toInt()
                             }
                     </code></pre>
+                    <aside class="notes" data-markdown>
+                        NATO phonetic alphabet
+                    </aside>
                 </section>
                 <section>
                     <pre><code class="kotlin" data-trim data-noescape data-line-numbers="1-2|4-11|0">
@@ -197,6 +240,9 @@
                                 foxtrot = 0.4f
                             )
                     </code></pre>
+                    <aside class="notes" data-markdown>
+                        These 2 invocations are equivalent
+                    </aside>
                 </section>
                 <section>
                     <pre><code class="kotlin" data-trim data-noescape data-line-numbers="0|2-7">
@@ -209,6 +255,11 @@
                                 alpha = Unit
                             )
                     </code></pre>
+                    <aside class="notes" data-markdown>
+                        This is semi-equivalent:
+                        * the eventual result will be the same
+                        * if we rename some of the argument in the method definition, this will break
+                    </aside>
                 </section>
                 <section>
                     <h4>Data classes</h4>
@@ -221,6 +272,12 @@
                         <li class="fragment fade-in">Destructuring - <span class="inline-code">componentN()</span> functions</span></li>
                         <li class="fragment fade-in"><span class="inline-code">copy()</span> function (with default parameters)</li>
                     </ul>
+                    <aside class="notes" data-markdown>
+                        These are beasts:
+                        * powerful
+                        * handy
+                        * dangerous in terms of backwards-compatibility (again, autogeneration)
+                    </aside>
                 </section>
                 <section>
                     <h4><span class="inline-code">data class</span> - how to extend safely?</h4>
@@ -242,6 +299,19 @@
                     <p class="fragment fade-in">💥<span class="inline-code">copy()</span> function will get changed anyawy</p>
                     <br />
                     <p class="fragment fade-in">Should we resign from using data classes at all❓<br/>🤔</p>
+                    <aside class="notes" data-markdown>
+                        * `copy()` is used to create a clone of an object
+                        * allows to modify single properties
+                        ```
+                        fun copy(
+                            name: String = this.name, 
+                            age: Int = this.age
+                        ) = User(name, age)
+                        ```
+                        If used in the code, it will break - whatever we do.
+
+                        Should we resign? 
+                    </aside>
                 </section>
                 <section>
                     <h4>Static members</h4>
@@ -336,7 +406,7 @@
                     <li class="fragment fade-in">Should we build libs using Kotlin?
                         <ul style="list-style-type:none">
                             <li class="fragment fade-in">👍 Create from scratch</li>
-                            <li class="fragment fade-in">☝ Port Java-based ones</li>
+                            <li class="fragment fade-in">☝️ Port Java-based ones</li>
                         </ul>
                     </li>
                     <li class="fragment fade-in">Consider your potential users' needs</li>
