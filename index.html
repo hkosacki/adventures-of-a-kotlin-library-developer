@@ -31,6 +31,11 @@
             <section>
                 <h2>The Adventures of a Kotlin-based Library Developer</h2>
                 <h4>Hubert Kosacki</h4>
+                <aside class="notes" data-markdown>
+                    * First talk in English so far
+                    * Are there any Java developers in the audience?
+                    * Any Kotlin developers?
+                </aside>
             </section>
 
             <!-- INTRO -->
@@ -38,11 +43,20 @@
             <section>
                 <section>
                     <h3>Kotlin ❤️ Java</h3>
+                    <aside class="notes" data-markdown>
+                        * Kotlin loves Java
+                        * It's built on top of it
+                        * It's interoperable
+                    </aside>
                 </section>
                 <section>
                     <h3>Java ❤️ Kotlin</h3>
                     ❓<br />
                     🤔
+                    <aside class="notes" data-markdown>
+                        * Does the same feeling apply to Java?
+                        * Though Kotlin is interoperable, it's not to be used the same from Java codebase in all cases
+                    </aside>
                 </section>
                 <section>
                     <img src="img/00-jar-icon.png" class="fragment fade-in"
@@ -57,6 +71,14 @@
                         <span class="source">The JAR icon taken from:
                             http://www.icons101.com/icons/12/iOS_78_style_icons_for_Java_by_ChilliTrav/128/jar.png</span>
                     </span>
+                    <aside class="notes" data-markdown>
+                        Let's assume:
+                        * we are delivering Java library
+                        * we'd like to migrate it to Kotlin
+                        * what would this operation result in?
+                            * Kotlin does some autogeneration under the hood…
+                            * is it safe?
+                    </aside>
                 </section>
             </section>
 
@@ -64,6 +86,12 @@
             <section>
                 <section>
                     <h3>Binary compatibility</h3>
+                    <aside class="notes" data-markdown>
+                        Let's have a closer look at one of cool Java features:
+                        # Binary compatibility
+
+                        Sounds exciting, doesn't it?
+                    </aside>
                 </section>
                 <section>
                     <h4>Binary compatibility - what's this?</h4>
@@ -71,6 +99,11 @@
                         <img src="img/01-raw-meat.jpg" />
                         <span class="source">https://pxhere.com/en/photo/1365486</span>
                     </p>
+                    <aside class="notes" data-markdown>
+                        Sounds like we're going to touch some low-level stuff…
+
+                        like _raw meat_
+                    </aside>
                 </section>
                 <section>
                     <p>It's about replacing the Java compiled classes without recompiling their consumers</p>
