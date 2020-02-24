@@ -192,6 +192,9 @@
                 </section>
                 <section>
                     <h4>Now, what a <span style="font-style: italic;">simple</span> Kotlin conversion can break?</h4>
+                    <aside class="notes" data-markdown>
+                        Ready and set, let's ask ourselves the question:
+                    </aside>
                 </section>
             </section>
 
@@ -297,8 +300,6 @@
                         )
                     </code></pre>
                     <p class="fragment fade-in">💥<span class="inline-code">copy()</span> function will get changed anyawy</p>
-                    <br />
-                    <p class="fragment fade-in">Should we resign from using data classes at all❓<br/>🤔</p>
                     <aside class="notes" data-markdown>
                         * `copy()` is used to create a clone of an object
                         * allows to modify single properties
@@ -312,6 +313,53 @@
 
                         Should we resign? 
                     </aside>
+                </section>
+                <section>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        data class Data(
+                            val yankee: Boolean,
+                            val xray: Float
+                        )
+                    </code></pre>
+                    <pre><code class="java" data-trim data-noescape>
+                        @NotNull
+                        public final Data copy(boolean yankee, float xray) {
+                            return new Data(yankee, xray);
+                        }
+                        
+                        // $FF: synthetic method
+                        public static Data copy$default(Data var0, boolean var1, float var2, int var3, Object var4) {
+                            if ((var3 & 1) != 0) { var1 = var0.yankee; }
+                            if ((var3 & 2) != 0) { var2 = var0.xray; }
+                            return var0.copy(var1, var2);
+                        }
+                    </code></pre>
+                </section>
+                <section>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        data class Data(
+                            val yankee: Boolean,
+                            val xray: Float,
+                            val zulu: String? = null
+                        )
+                    </code></pre>
+                    <pre><code class="java" data-trim data-noescape>
+                        @NotNull
+                        public final Data copy(boolean yankee, float xray, @Nullable String zulu) {
+                            return new Data(yankee, xray, zulu);
+                        }
+
+                        // $FF: synthetic method
+                        public static Data copy$default(Data var0, boolean var1, float var2, String var3, int var4, Object var5) {
+                            if ((var4 & 1) != 0) { var1 = var0.yankee; }
+                            if ((var4 & 2) != 0) { var2 = var0.xray; }
+                            if ((var4 & 4) != 0) { var3 = var0.zulu; }
+                            return var0.copy(var1, var2, var3);
+                        }
+                    </code></pre>
+                </section>
+                <section>
+                    <p>Should we resign from using data classes at all❓<br/>🤔</p>
                 </section>
                 <section>
                     <h4>Static members</h4>
