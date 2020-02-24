@@ -469,6 +469,7 @@
 
                         What's more
                         * since const val is known at compile time, it's provided as `static final` out of the box
+                        * we can reference it without any overhead
                     </aside>
                 </section>
             </section>
@@ -489,6 +490,28 @@
                 <p class="fragment fade-in monospace">1.0.0 → 1.0.2 ✅</p>
                 <p class="fragment fade-in monospace">1.0.0 → 1.1.0 ✅</p>
                 <p class="fragment fade-in monospace">1.9.1 → 2.0.0 ❌</p>
+                <p class="fragment fade-in source"><a href="https://semver.org/">https://semver.org/</a></p>
+                <aside class="notes" data-markdown>
+                    APPENDIX
+                    
+                    For all those who want to build and publish a library 
+                    * also for those, who want to expose Flutter libs ;)
+                    * short intro to semantic versioning:           
+                        * the version number consists of 3 parts:
+                        * `major.minor.patch`
+                    
+                    For each release you should increment:
+                    * major - when changed API is breaking backwards-compatibility
+                    * minor - when adding new features that are backwards-compatibile
+                    * patch - no changes in API, but internal fixes only 
+                   
+                    The following compatibility rules apply:
+                    * updating patch segment must not break the build;
+                    * updating minor segment must not break the build;
+                    * updating major is allowed to break the build (but not required to).
+
+                    Now, somehow magically, all the rules of putting `+` in gradle dependencies just got clear ;)
+                </aside>
             </section>
 
             <!-- Summary -->
@@ -504,6 +527,14 @@
                     </li>
                     <li class="fragment fade-in">Consider your potential users' needs</li>
                 </ul>
+                <aside class="notes" data-markdown>
+                    1. A pretty obvious outcome
+                    1. Should we?
+                        1. Create from scratch: no problem
+                        1. Migrate from Java - watch out!
+                    1. Look at your built solution - try to foresee any issues that may arise when migratins
+                        * take under consideration potential places where reflection-based approach is needed
+                </aside>
             </section>
 
             <!-- Resources -->
