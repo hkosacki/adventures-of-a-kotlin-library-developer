@@ -389,14 +389,21 @@
                             }
                         }
                     </code></pre>
-                    <pre><code class="kotlin" data-trim data-noescape>
+                    <p class="fragment fade-in source"  data-fragment-index=1>Inspired by <a href="https://xkcd.com/221/" target="_blank">https://xkcd.com/221/</a></p>
+                    <pre class="fragment fade-in" data-fragment-index=2><code class="java" data-trim data-noescape>
                         public class UtilConsumer {
                             public void printRollResult(){
                                 System.out.println(Util.getRandomNumber());
                             }
                         }
                     </code></pre>
-                    <p class="source">Inspired by <a href="https://xkcd.com/221/" target="_blank">https://xkcd.com/221/</a></p>
+                    <aside class="notes" data-markdown>
+                        Our next adventure is sponsored by static items. These are also tricky, when converting to Kotlin.
+
+                        Let's focus on this Utility class that generates random numbers.
+                        
+                        _(tell about the class structure)_
+                    </aside>
                 </section>
                 <section>
                     <h4>Static functions</h4>
@@ -418,6 +425,16 @@
                             }
                         }
                     </code></pre>
+                    <aside class="notes" data-markdown>
+                        * so we have converted
+                        * fields became properties (these are hidden behind getters/setters)
+                        * our method as well (thanks to the get-convention)
+                        AND - surprise
+                        * we're not binary compatible again
+                        * static items are hidden behind the `INSTANCE` field that holds the singleton
+                        * so either we reference the singleton
+                        * or expose the `getRandomNumber()` method
+                    </aside>
                 </section>
                 <section>
                     <h4>Static fields/properties</h4>
@@ -436,10 +453,23 @@
                         public class UtilConsumer { // java
                             public void printRollResult(){
                                 System.out.println(Util.getRandomNumber() 
-                                    + Util<span class="fragment fade-in" data-fragment-index=2><span class="fragment fade-out" data-fragment-index=4>.INSTANCE</span></span>.PENDING_VALUE <span class="fragment fade-in" data-fragment-index=5>+ Utils.RESULT</span>);
+                                    + Util.<span class="fragment fade-in" data-fragment-index=2><span class="fragment fade-out" data-fragment-index=4>INSTANCE.get</span></span>PENDING_VALUE<span class="fragment fade-in" data-fragment-index=2><span class="fragment fade-out" data-fragment-index=4>()</span></span> <span class="fragment fade-in" data-fragment-index=5>+ Utils.RESULT</span>);
                             }
                         }
                     </code></pre>
+                    <aside class="notes" data-markdown>
+                        * Similar rules apply to the properties
+                        * as mentioned before, the properties are fields hidden behind getters and setters
+                        * so referencing the `INSTANCE` is not enough
+                        * we also need to follow the convention - call the method
+                       
+                        BUT - surprise
+                        * we're not binary compatible again
+                        * so we expose the field by `@JvmField` instead of the getters
+
+                        What's more
+                        * since const val is known at compile time, it's provided as `static final` out of the box
+                    </aside>
                 </section>
             </section>
 
