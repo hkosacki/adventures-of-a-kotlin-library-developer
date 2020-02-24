@@ -1,50 +1,592 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+    <title>The Adventures of a Kotlin-based Library Developer</title>
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/night.css">
+    <link rel="stylesheet" href="css/custom.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/darkula.css">
 
-		<script src="js/reveal.js"></script>
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				hash: true,
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/highlight/highlight.js' },
-					{ src: 'plugin/notes/notes.js', async: true }
-				]
-			});
-		</script>
-	</body>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h2>The Adventures of a Kotlin-based Library Developer</h2>
+                <h4>Hubert Kosacki</h4>
+                <aside class="notes" data-markdown>
+                    * First talk in English so far
+                    * Are there any Java developers in the audience?
+                    * Any Kotlin developers?
+                </aside>
+            </section>
+
+            <!-- INTRO -->
+
+            <section>
+                <section>
+                    <h3>Kotlin ❤️ Java</h3>
+                    <aside class="notes" data-markdown>
+                        * Kotlin loves Java
+                        * It's built on top of it
+                        * It's interoperable
+                    </aside>
+                </section>
+                <section>
+                    <h3>Java ❤️ Kotlin</h3>
+                    ❓<br />
+                    🤔
+                    <aside class="notes" data-markdown>
+                        * Does the same feeling apply to Java?
+                        * Though Kotlin is interoperable, it's not to be used the same from Java codebase in all cases
+                    </aside>
+                </section>
+                <section>
+                    <img src="img/00-jar-icon.png" class="fragment fade-in"
+                        style="background: none; border: none; box-shadow: none; vertical-align: middle; " />
+                    <img src="img/00-Kotlin-transform.png" class="fragment fade-in"
+                        style="background: none; border: none; box-shadow: none; vertical-align: middle; " />
+                    <span class="fragment fade-in" style="font-size: 64px; vertical-align: middle;">❓</span>
+
+                    <span class="fragment fade-in">
+                        <span class="source">Kotlin logo taken from:
+                            https://resources.jetbrains.com/storage/products/kotlin/docs/kotlin_logos.zip</span>
+                        <span class="source">The JAR icon taken from:
+                            http://www.icons101.com/icons/12/iOS_78_style_icons_for_Java_by_ChilliTrav/128/jar.png</span>
+                    </span>
+                    <aside class="notes" data-markdown>
+                        Let's assume:
+                        * we are delivering Java library
+                        * we'd like to migrate it to Kotlin
+                        * what would this operation result in?
+                            * Kotlin does some autogeneration under the hood…
+                            * is it safe?
+                    </aside>
+                </section>
+            </section>
+
+            <!-- PART 1 - Binary compatibility-->
+            <section>
+                <section>
+                    <h3>Binary compatibility</h3>
+                    <aside class="notes" data-markdown>
+                        Let's have a closer look at one of cool Java features:
+                        # Binary compatibility
+
+                        Sounds exciting, doesn't it?
+                    </aside>
+                </section>
+                <section>
+                    <h4>Binary compatibility - what's this?</h4>
+                    <p class="fragment fade-in">
+                        <img src="img/01-raw-meat.jpg" />
+                        <span class="source">https://pxhere.com/en/photo/1365486</span>
+                    </p>
+                    <aside class="notes" data-markdown>
+                        Sounds like we're going to touch some low-level stuff…
+
+                        like _raw meat_
+                    </aside>
+                </section>
+                <section>
+                    <p>It's about replacing the Java compiled classes without recompiling their consumers</p>
+                    <aside class="notes" data-markdown>
+                        Although it sounds more seriously, it's all about…
+
+                        Let's have a look, what does it mean in practice.
+                    </aside>
+                </section>
+                <section data-transition="slide none">
+                    <img src="img/01-dependencies-java.png" />
+                    <aside class="notes" data-markdown>
+                        Android project setup demo
+                        * a mobile meetup
+                        * I'm originating from Android development
+                        
+                        Assume we have a project that has 2 dependencies, which one of is transitive:
+                        * it needs to be included in the project anyways
+                        * we want to kotlinize this library
+                    </aside>
+                </section>
+                <section data-transition="none">
+                    <img src="img/01-dependencies-kotlin.png" />
+                    <aside class="notes" data-markdown>
+                        * both libraries are compiled
+                        * they are linked in RT
+                    </aside>
+                </section>
+                <section data-transition="none">
+                    <img src="img/01-dependencies-kotlin-question-mark.png" />
+                    <aside class="notes" data-markdown>
+                        Knowing that Kotlin does some things automagically, we need to be aware of what binary compatibility requires to be fulfilled.
+                    </aside>
+                </section>
+                <section>
+                    <h4>What affects the binary compatibility?</h4>
+                    <ul style="list-style-type:none">
+                        <li class="fragment fade-in">✅ internal, non-exposed changes</li>
+                        <li class="fragment fade-in">✅ public API extensions</li>
+                        <li class="fragment fade-in">❌ almost any public API deletions</li>
+                    </ul>
+                    <aside class="notes" data-markdown>
+                        ✅ - safe
+
+                        ❌ - unsafe
+                    </aside>
+                </section>
+                <section>
+                    <h4>What exactly breaks the compatibility - eg.</h4>
+                    <ol>
+                        <li class="fragment fade-in">Deleting a public API (class, interface, enum)</li>
+                        <li class="fragment fade-in">Deleting a public package</li>
+                        <li class="fragment fade-in">Hiding a public API's member (field, method, etc.)</li>
+                        <li class="fragment fade-in">Adding abstract methods in public API</li>
+                        <li class="fragment fade-in">Renaming a public method or class member</li>
+                        <li class="fragment fade-in">Adding parameters to method calls</li>
+                        <li class="fragment fade-in">Changing the <span class="inline-code">final</span> and <span
+                                class="inline-code">static</span> modifiers</li>
+                        <li class="fragment fade-in"><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2"
+                                target="_blank">…and many, many more</a></li>
+                    </ol>
+                    <aside class="notes" data-markdown>
+                        Let's have a look at some examples:
+                        1. rather obvious
+                        1. no questions - just a bit more nuclear than 1.
+                        1. make private/protected - the existing references will fail
+                        1. an abstract method will be not implemented in existing implementations
+                        1. signature change - the existing references will fail
+                        1. signature change - same as above
+                        1. change `static` always produces errors, while adding `final` might break
+                        1. This is only an excerpt, see this resource for more insights
+                    </aside>
+                </section>
+                <section>
+                    <h5>The rule of thumb</h5>
+                    <img src="img/01-cannot_be_unseen.jpg" class="fragment fade-in" data-fragment-index=1/>
+                    <p class="fragment fade-in source" data-fragment-index=1>https://informatiesec.files.wordpress.com/2011/09/cannot_be_unseen.jpg</p>
+                    <h4 class="fragment fade-in">What you have exposed, cannot be un-exposed</h4>
+                </section><section>
+                    <h4>Enjoy your raw stuff ;)</h4>
+                    <img src="img/01-tartare.jpeg" />
+                    <span class="source">https://pxhere.com/en/photo/643053</span>
+                    <aside class="notes" data-markdown>
+                        Knowing all of that, we can leverage our findings and prepare a nice tartare out of the served raw meat ;)
+                    </aside>
+                </section>
+                <section>
+                    <h4>Now, what a <span style="font-style: italic;">simple</span> Kotlin conversion can break?</h4>
+                    <aside class="notes" data-markdown>
+                        Ready and set, let's ask ourselves the question:
+                    </aside>
+                </section>
+            </section>
+
+            <!-- PART 2 - Kotlin traps -->
+            <section>
+                <section>
+                    <h3>The Kotlin traps</h3>
+                </section>
+                <section>
+                    <h4>Named arguments</h4>
+                    <br />
+                    <p class="fragment fade-in">Java:<br />Renaming parameter name <span class="fragment highlight-green">is binary compatible</span></p>
+                    <br />
+                    <p class="fragment fade-in">Kotlin:<br />💥 <span class="fragment highlight-red">not anymore‼️</span></p>
+                    <br />
+                    <p class="fragment fade-in">Named arguments <u>become a part of API</u></p>
+                </section>
+                <section>
+                    <pre><code class="kotlin" data-trim data-noescape data-line-numbers>
+                            fun someLongParamsListFun(
+                                alpha: Any,
+                                bravo: Boolean,
+                                charlie: Char,
+                                delta: Double,
+                                echo: Any,
+                                foxtrot: Float
+                            ): Int {
+                                return (delta + foxtrot).toInt()
+                            }
+                    </code></pre>
+                    <aside class="notes" data-markdown>
+                        NATO phonetic alphabet
+                    </aside>
+                </section>
+                <section>
+                    <pre><code class="kotlin" data-trim data-noescape data-line-numbers="1-2|4-11|0">
+                            val result = 
+                                someLongParamsListFun(Unit, false, 'z', 3.0, Unit, 0.4f)    
+                            
+                            val result2a = someLongParamsListFun(
+                                alpha = Unit,
+                                bravo = false,
+                                charlie = 'z',
+                                delta = 3.0,
+                                echo = Unit,
+                                foxtrot = 0.4f
+                            )
+                    </code></pre>
+                    <aside class="notes" data-markdown>
+                        These 2 invocations are equivalent
+                    </aside>
+                </section>
+                <section>
+                    <pre><code class="kotlin" data-trim data-noescape data-line-numbers="0|2-7">
+                            val result2b = someLongParamsListFun(
+                                foxtrot = 0.4f,
+                                echo = Unit,
+                                charlie = 'z',
+                                delta = 3.0,
+                                bravo = false,
+                                alpha = Unit
+                            )
+                    </code></pre>
+                    <aside class="notes" data-markdown>
+                        This is semi-equivalent:
+                        * the eventual result will be the same
+                        * if we rename some of the argument in the method definition, this will break
+                    </aside>
+                </section>
+                <section>
+                    <h4>Data classes</h4>
+                </section>
+                <section>
+                    <h4>Kotlin <span class="inline-code">data class</span></h4>
+                    <ul>
+                        <li class="fragment fade-in">POJO on steroids</li>
+                        <li class="fragment fade-in">Autogeneration of <span class="inline-code">equals()</span> and <span class="inline-code">hashCode()</span></li>
+                        <li class="fragment fade-in">Destructuring - <span class="inline-code">componentN()</span> functions</span></li>
+                        <li class="fragment fade-in"><span class="inline-code">copy()</span> function (with default parameters)</li>
+                    </ul>
+                    <aside class="notes" data-markdown>
+                        These are beasts:
+                        * powerful
+                        * handy
+                        * dangerous in terms of backwards-compatibility (again, autogeneration)
+                    </aside>
+                </section>
+                <section>
+                    <h4><span class="inline-code">data class</span> - how to extend safely?</h4>
+                    <ul>
+                        <li class="fragment fade-in">Put new parameters at the end (Destructuring)</li>
+                        <li class="fragment fade-in">Make these parameters optional - provide a default value</li>
+                        <li class="fragment fade-in">Put the <span class="inline-code">@JvmOverloads</span> annotation on the constructor</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4><span class="inline-code">data class</span> - how to extend safely?</h4>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        data class Data <span class="fragment fade-in" data-fragment-index=3>@JvmOverloads constructor</span> (
+                            val yankee: Boolean,
+                            val xray: Float<span class="fragment fade-in" data-fragment-index=1>,
+                            val zulu: String</span><span class="fragment fade-in" data-fragment-index=2>? = null</span>
+                        )
+                    </code></pre>
+                    <p class="fragment fade-in">💥<span class="inline-code">copy()</span> function will get changed anyawy</p>
+                    <aside class="notes" data-markdown>
+                        * Put new parameters at the end (Destructuring)
+                        * Make these parameters optional - provide a default value
+                        * Put the <span class="inline-code">@JvmOverloads</span> annotation on the constructor
+                        
+                        Are we safe yet?
+
+                        * `copy()` is used to create a clone of an object
+                        * allows to modify single properties
+                        If used in the code, it will break - whatever we do.
+                    </aside>
+                </section>
+                <section>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        data class Data(
+                            val yankee: Boolean,
+                            val xray: Float
+                        )
+                    </code></pre>
+                    <pre><code class="java" data-trim data-noescape>
+                        @NotNull
+                        public final Data copy(boolean yankee, float xray) {
+                            return new Data(yankee, xray);
+                        }
+                        
+                        // $FF: synthetic method
+                        public static Data copy$default(Data var0, boolean var1, float var2, int var3, Object var4) {
+                            if ((var3 & 1) != 0) { var1 = var0.yankee; }
+                            if ((var3 & 2) != 0) { var2 = var0.xray; }
+                            return var0.copy(var1, var2);
+                        }
+                    </code></pre>
+                    <aside class="notes" data-markdown>
+                        Pay attention to the `copy()` method signature
+                        * 2 parameters only
+                    </aside>
+                </section>
+                <section>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        data class Data(
+                            val yankee: Boolean,
+                            val xray: Float,
+                            val zulu: String? = null
+                        )
+                    </code></pre>
+                    <pre><code class="java" data-trim data-noescape>
+                        @NotNull
+                        public final Data copy(boolean yankee, float xray, @Nullable String zulu) {
+                            return new Data(yankee, xray, zulu);
+                        }
+
+                        // $FF: synthetic method
+                        public static Data copy$default(Data var0, boolean var1, float var2, String var3, int var4, Object var5) {
+                            if ((var4 & 1) != 0) { var1 = var0.yankee; }
+                            if ((var4 & 2) != 0) { var2 = var0.xray; }
+                            if ((var4 & 4) != 0) { var3 = var0.zulu; }
+                            return var0.copy(var1, var2, var3);
+                        }
+                    </code></pre>
+                    <aside class="notes" data-markdown>
+                        Look at the `copy()` method signature again:
+                        * now 3 parameters 
+                        * no overloads for previous versions
+                    </aside>
+                </section>
+                <section>
+                    <p>Should we resign from using data classes at all❓<br/>🤔</p>
+                    <img src="img/02-choose-wisely.jpg" class="fragment fade-in" data-fragment-index=1/>
+                    <p class="fragment fade-in source" data-fragment-index=1>https://i.pinimg.com/736x/b8/76/9f/b8769f8b1c60786e999b80690d3f620a.jpg</p>
+                    <aside class="notes" data-markdown>
+                        Now it's the time to ask the question: should we resign…?
+                        This is an option for the classes that are not subject to change overtime.
+                        With great power comes great responsibility.
+                        Choose wisely.
+                    </aside>
+                </section>
+                <section>
+                    <h4>Static members</h4>
+                    <pre class="fragment fade-in" data-fragment-index=1><code class="java" data-trim data-noescape>
+                        public class Util {
+                            public static final int RESULT = 4;
+                            public static int PENDING_VALUE = 0;
+                        
+                            public static int getRandomNumber(){
+                                return 4; // chosen by a fair dice roll
+                                          // guaranteed to be random
+                            }
+                        }
+                    </code></pre>
+                    <p class="fragment fade-in source"  data-fragment-index=1>Inspired by <a href="https://xkcd.com/221/" target="_blank">https://xkcd.com/221/</a></p>
+                    <pre class="fragment fade-in" data-fragment-index=2><code class="java" data-trim data-noescape>
+                        public class UtilConsumer {
+                            public void printRollResult(){
+                                System.out.println(Util.getRandomNumber());
+                            }
+                        }
+                    </code></pre>
+                    <aside class="notes" data-markdown>
+                        Our next adventure is sponsored by static items. These are also tricky, when converting to Kotlin.
+
+                        Let's focus on this Utility class that generates random numbers.
+                        
+                        _(tell about the class structure)_
+                    </aside>
+                </section>
+                <section>
+                    <h4>Static functions</h4>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        object Util { // kt
+                            const val RESULT = 4
+
+                            var PENDING_VALUE = 0
+                            <span class="fragment fade-in" data-fragment-index=3>@JvmStatic</span>
+                            val randomNumber: Int
+                                get() = 4 // chosen by a fair dice roll
+                                          // guaranteed to be random
+                        }
+                    </code></pre>
+                    <pre class="fragment fade-in" data-fragment-index=1><code class="kotlin" data-trim data-noescape>
+                        public class UtilConsumer { // java
+                            public void printRollResult(){
+                                System.out.println(Util<span class="fragment fade-in" data-fragment-index=2><span class="fragment fade-out" data-fragment-index=4>.INSTANCE</span></span>.getRandomNumber());
+                            }
+                        }
+                    </code></pre>
+                    <aside class="notes" data-markdown>
+                        * so we have converted
+                        * fields became properties (these are hidden behind getters/setters)
+                        * our method as well (thanks to the get-convention)
+                        AND - surprise
+                        * we're not binary compatible again
+                        * static items are hidden behind the `INSTANCE` field that holds the singleton
+                        * so either we reference the singleton
+                        * or expose the `getRandomNumber()` method
+                    </aside>
+                </section>
+                <section>
+                    <h4>Static fields/properties</h4>
+                    <pre><code class="kotlin" data-trim data-noescape>
+                        object Util { // kt
+                            const val RESULT = 4
+                            <span class="fragment fade-in" data-fragment-index=3>@JvmField</span>
+                            var PENDING_VALUE = 0
+                            @JvmStatic
+                            val randomNumber: Int
+                                get() = 4 // chosen by a fair dice roll
+                                          // guaranteed to be random
+                        }
+                    </code></pre>
+                    <pre class="fragment fade-in" data-fragment-index=1><code class="kotlin" data-trim data-noescape>
+                        public class UtilConsumer { // java
+                            public void printRollResult(){
+                                System.out.println(Util.getRandomNumber() 
+                                    + Util.<span class="fragment fade-in" data-fragment-index=2><span class="fragment fade-out" data-fragment-index=4>INSTANCE.get</span></span>PENDING_VALUE<span class="fragment fade-in" data-fragment-index=2><span class="fragment fade-out" data-fragment-index=4>()</span></span> <span class="fragment fade-in" data-fragment-index=5>+ Utils.RESULT</span>);
+                            }
+                        }
+                    </code></pre>
+                    <aside class="notes" data-markdown>
+                        * Similar rules apply to the properties
+                        * as mentioned before, the properties are fields hidden behind getters and setters
+                        * so referencing the `INSTANCE` is not enough
+                        * we also need to follow the convention - call the method
+                       
+                        BUT - surprise
+                        * we're not binary compatible again
+                        * so we expose the field by `@JvmField` instead of the getters
+
+                        What's more
+                        * since const val is known at compile time, it's provided as `static final` out of the box
+                        * we can reference it without any overhead
+                    </aside>
+                </section>
+            </section>
+
+            <!-- APPENDIX - semantic versioning -->
+            <section>
+                <h4>Appendix: Semantic versioning</h4>
+                <p class="big monospace">
+                    <span class="fragment fade-in-then-semi-out">x</span>.<span
+                        class="fragment fade-in-then-semi-out">y</span>.<span
+                        class="fragment fade-in-then-semi-out">z</span>
+                </p>
+                <p class="monospace">
+                    <span class="fragment fade-in">major</span><span class="fragment fade-in">.minor</span><span
+                        class="fragment fade-in">.patch</span>
+                </p>
+                <br />
+                <p class="fragment fade-in monospace">1.0.0 → 1.0.2 ✅</p>
+                <p class="fragment fade-in monospace">1.0.0 → 1.1.0 ✅</p>
+                <p class="fragment fade-in monospace">1.9.1 → 2.0.0 ❌</p>
+                <p class="fragment fade-in source"><a href="https://semver.org/">https://semver.org/</a></p>
+                <aside class="notes" data-markdown>
+                    APPENDIX
+                    
+                    For all those who want to build and publish a library 
+                    * also for those, who want to expose Flutter libs ;)
+                    * short intro to semantic versioning:           
+                        * the version number consists of 3 parts:
+                        * `major.minor.patch`
+                    
+                    For each release you should increment:
+                    * major - when changed API is breaking backwards-compatibility
+                    * minor - when adding new features that are backwards-compatibile
+                    * patch - no changes in API, but internal fixes only 
+                   
+                    The following compatibility rules apply:
+                    * updating patch segment must not break the build;
+                    * updating minor segment must not break the build;
+                    * updating major is allowed to break the build (but not required to).
+
+                    Now, somehow magically, all the rules of putting `+` in gradle dependencies just got clear ;)
+                </aside>
+            </section>
+
+            <!-- Summary -->
+            <section>
+                <h3>Summary</h3>
+                <ul>
+                    <li class="fragment fade-in">Kotlin <span class="inline-code">!=</span> Java</li>
+                    <li class="fragment fade-in">Should we build libs using Kotlin?
+                        <ul style="list-style-type:none">
+                            <li class="fragment fade-in">👍 Create from scratch</li>
+                            <li class="fragment fade-in">☝️ Port Java-based ones</li>
+                        </ul>
+                    </li>
+                    <li class="fragment fade-in">Consider your potential users' needs</li>
+                </ul>
+                <aside class="notes" data-markdown>
+                    1. A pretty obvious outcome
+                    1. Should we?
+                        1. Create from scratch: no problem
+                        1. Migrate from Java - watch out!
+                    1. Look at your built solution - try to foresee any issues that may arise when migratins
+                        * take under consideration potential places where reflection-based approach is needed
+                </aside>
+            </section>
+
+            <!-- Resources -->
+            <section>
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://jakewharton.com/public-api-challenges-in-kotlin/" target="_blank">Public API
+                            challenges in Kotlin</a>, Jake Wharton</li>
+                    <li><a href="http://www.informit.com/articles/article.aspx?p=32088" target="_blank">Java Binary
+                            Compatibility</a>, Joshua Engel</li>
+                    <li><a href="http://www.informit.com/articles/article.aspx?p=98134" target="_blank">Java Binary
+                            Compatibility Part 2</a>, Joshua Engel </li>
+                    <li><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2#Evolving_API_interfaces_-_API_type_members"
+                            target="_blank">Evolving Java-based APIs 2</a>, Eclipse Wiki</li>
+                    <li><a href="https://leanpub.com/effectivekotlin" target="_blank">Effective Kotlin</a>, Marcin
+                        Moskała</li>
+                    <li><a href="https://semver.org/" target="_blank">Semantic Versioning 2.0.0</a></li>
+                </ul>
+                <p>Created with <a href="https://revealjs.com/" target="_blank">Reveal.js</a></p>
+            </section>
+
+            <!-- ENDING -->
+
+            <section>
+                <h3>THE END</h3>
+                <h6>Thank you for the attention!</h6>
+                <img src="img/99-lqr-link.png" />
+                <span class="source">https://hkosacki.github.io/adventures-of-a-kotlin-library-developer/#/</span><br />
+                <span style="margin-right: 50px;"><img class="inline" src="img/99-github-6-64.png" /><a
+                        href="https://github.com/hkosacki/" target="_blank">hkosacki</a></span>
+                <span><img class="inline" src="img/99-twitter-64.png" /><a href="https://twitter.com/hkosacki"
+                        target="_blank">@hkosacki</a></span>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/reveal.js"></script>
+
+    <script>
+        // More info about config & dependencies:
+        // - https://github.com/hakimel/reveal.js#configuration
+        // - https://github.com/hakimel/reveal.js#dependencies
+        Reveal.initialize({
+            hash: true,
+            dependencies: [
+                { src: 'plugin/markdown/marked.js' },
+                { src: 'plugin/markdown/markdown.js' },
+                { src: 'plugin/highlight/highlight.js' },
+                { src: 'plugin/notes/notes.js', async: true }
+            ]
+        });
+    </script>
+</body>
+
 </html>

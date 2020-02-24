@@ -1,0 +1,24 @@
+.source {
+    font-size: 12pt;
+    display: block;
+}
+
+.reveal section img.inline {
+    margin: 15px;
+    background: none;
+    border: none;
+    vertical-align: middle; 
+}
+
+.big {
+    font-size: 96pt;
+}
+
+.monospace {
+    font-family: monospace;
+}
+
+.inline-code {
+    font-family: monospace;
+    color: #e7ad52;
+}
