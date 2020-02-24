@@ -301,17 +301,15 @@
                     </code></pre>
                     <p class="fragment fade-in">💥<span class="inline-code">copy()</span> function will get changed anyawy</p>
                     <aside class="notes" data-markdown>
+                        * Put new parameters at the end (Destructuring)
+                        * Make these parameters optional - provide a default value
+                        * Put the <span class="inline-code">@JvmOverloads</span> annotation on the constructor
+                        
+                        Are we safe yet?
+
                         * `copy()` is used to create a clone of an object
                         * allows to modify single properties
-                        ```
-                        fun copy(
-                            name: String = this.name, 
-                            age: Int = this.age
-                        ) = User(name, age)
-                        ```
                         If used in the code, it will break - whatever we do.
-
-                        Should we resign? 
                     </aside>
                 </section>
                 <section>
@@ -334,6 +332,10 @@
                             return var0.copy(var1, var2);
                         }
                     </code></pre>
+                    <aside class="notes" data-markdown>
+                        Pay attention to the `copy()` method signature
+                        * 2 parameters only
+                    </aside>
                 </section>
                 <section>
                     <pre><code class="kotlin" data-trim data-noescape>
@@ -357,13 +359,26 @@
                             return var0.copy(var1, var2, var3);
                         }
                     </code></pre>
+                    <aside class="notes" data-markdown>
+                        Look at the `copy()` method signature again:
+                        * now 3 parameters 
+                        * no overloads for previous versions
+                    </aside>
                 </section>
                 <section>
                     <p>Should we resign from using data classes at all❓<br/>🤔</p>
+                    <img src="img/02-choose-wisely.jpg" class="fragment fade-in" data-fragment-index=1/>
+                    <p class="fragment fade-in source" data-fragment-index=1>https://i.pinimg.com/736x/b8/76/9f/b8769f8b1c60786e999b80690d3f620a.jpg</p>
+                    <aside class="notes" data-markdown>
+                        Now it's the time to ask the question: should we resign…?
+                        This is an option for the classes that are not subject to change overtime.
+                        With great power comes great responsibility.
+                        Choose wisely.
+                    </aside>
                 </section>
                 <section>
                     <h4>Static members</h4>
-                    <pre><code class="java" data-trim data-noescape>
+                    <pre class="fragment fade-in" data-fragment-index=1><code class="java" data-trim data-noescape>
                         public class Util {
                             public static final int RESULT = 4;
                             public static int PENDING_VALUE = 0;
