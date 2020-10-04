@@ -32,9 +32,7 @@
                 <h2>The Adventures of a Kotlin-based Library Developer</h2>
                 <h4>Hubert Kosacki</h4>
                 <aside class="notes" data-markdown>
-                    * First talk in English so far
-                    * Are there any Java developers in the audience?
-                    * Any Kotlin developers?
+                    * First talk in English with such an audience so far
                 </aside>
             </section>
 
@@ -179,10 +177,30 @@
                 </section>
                 <section>
                     <h5>The rule of thumb</h5>
-                    <img src="img/01-cannot_be_unseen.jpg" class="fragment fade-in" data-fragment-index=1/>
-                    <p class="fragment fade-in source" data-fragment-index=1>https://informatiesec.files.wordpress.com/2011/09/cannot_be_unseen.jpg</p>
+                    <p class="fragment fade-in source" data-fragment-index=1><img src="img/01-cannot_be_unseen-small.jpg" class="fragment fade-in" data-fragment-index=1/>
+                        <br />
+                        https://informatiesec.files.wordpress.com/2011/09/cannot_be_unseen.jpg</p>
                     <h4 class="fragment fade-in">What you have exposed, cannot be un-exposed</h4>
-                </section><section>
+                    <p class="fragment fade-in source" style="text-align: right;">…Kotlin 1.4 to the rescue!</p>
+                </section>
+                
+                <section>
+                    <h6>The "Library mode"</h4>
+                        <p class="fragment fade-in" style="text-align: left;">
+                        Forces explicit:
+                        <ul>
+                            <li class="fragment fade-in">visibility modifiers for members that are <span class="inline-code">public</span> by default;</li>
+                            <li class="fragment fade-in">type declarations for member fields and functions return values.</li>
+                        </ul>
+                    </p>
+                    <p class="fragment fade-in" style="text-align: left;">
+                        Depending on the check type, detected issues may result in <span class="inline-code" style="background-color: #51503B;">warnings</span> or <span class="inline-code" style="text-decoration-line: underline; text-decoration-style: wavy;text-decoration-color: red;">compile time errors</span>.
+                    </p>
+                    <p class="fragment fade-in">Read more: <a href="https://kotlinlang.org/docs/reference/whatsnew14.html#explicit-api-mode-for-library-authors">Explicit API mode for library authors</a></p>
+                </section>
+                
+                
+                <section>
                     <h4>Enjoy your raw stuff ;)</h4>
                     <img src="img/01-tartare.jpeg" />
                     <span class="source">https://pxhere.com/en/photo/643053</span>
@@ -472,6 +490,26 @@
                         * we can reference it without any overhead
                     </aside>
                 </section>
+                <section>
+                    <h4>Compatibility between Kotlin versions</h4>
+                    <p>
+                        <ul>
+                            <li class="fragment fade-in">As the language evolves, it is being updated constantly</li>
+                            <li class="fragment fade-in">New features are added, some change behaviour</li>
+                            <li class="fragment fade-in">JetBrains publishes the "Compatibility Guide" between Kotlin versions</li>
+                        </ul>
+                    </p>
+                    <p class="fragment fade-in">Further reading: <a href="https://kotlinlang.org/docs/reference/evolution/kotlin-evolution.html">Kotlin Evolution</a></p>
+                    <aside class="notes" data-markdown>
+                        * As Kotlin evolves, it has an incremental growth between versions
+                        * Similar thing with building libraries: APIs grow, change
+                        * This leads to changes in the language: its compatibility (source, binary, behavioral)
+                        ** Source: source-incompatible change stops code that used to compile fine (without errors or warnings) from compiling anymore
+                        ** Binary: two binary artifacts are said to be binary-compatible if interchanging them doesn't lead to loading or linkage errors
+                        ** Behavioral: a change is said to be behavioral-incompatible if one and the same program demonstrates different behavior before and after applying the change
+                        * In order to make the transition between versions smooth, JetBrains lists all the changes all of the 3 kinds mentioned before, so you can always make sure if you are affected by them or not. They are rather some edge cases that won't happen to all, but it is always worth checking whether your code will work the same as before.
+                    </aside>
+                </section>
             </section>
 
             <!-- APPENDIX - semantic versioning -->
@@ -541,16 +579,12 @@
             <section>
                 <h3>Resources</h3>
                 <ul>
-                    <li><a href="https://jakewharton.com/public-api-challenges-in-kotlin/" target="_blank">Public API
-                            challenges in Kotlin</a>, Jake Wharton</li>
-                    <li><a href="http://www.informit.com/articles/article.aspx?p=32088" target="_blank">Java Binary
-                            Compatibility</a>, Joshua Engel</li>
-                    <li><a href="http://www.informit.com/articles/article.aspx?p=98134" target="_blank">Java Binary
-                            Compatibility Part 2</a>, Joshua Engel </li>
-                    <li><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2#Evolving_API_interfaces_-_API_type_members"
-                            target="_blank">Evolving Java-based APIs 2</a>, Eclipse Wiki</li>
-                    <li><a href="https://leanpub.com/effectivekotlin" target="_blank">Effective Kotlin</a>, Marcin
-                        Moskała</li>
+                    <li><a href="https://jakewharton.com/public-api-challenges-in-kotlin/" target="_blank">Public API challenges in Kotlin</a>, Jake Wharton</li>
+                    <li><a href="http://www.informit.com/articles/article.aspx?p=32088" target="_blank">Java Binary Compatibility</a>, Joshua Engel</li>
+                    <li><a href="http://www.informit.com/articles/article.aspx?p=98134" target="_blank">Java Binary Compatibility Part 2</a>, Joshua Engel </li>
+                    <li><a href="https://wiki.eclipse.org/Evolving_Java-based_APIs_2#Evolving_API_interfaces_-_API_type_members" target="_blank">Evolving Java-based APIs 2</a>, Eclipse Wiki</li>
+                    <li><a href="https://leanpub.com/effectivekotlin" target="_blank">Effective Kotlin</a>, Marcin Moskała</li>
+                    <li><a href="https://kotlinlang.org/docs/reference/evolution/kotlin-evolution.html" target="_blank">Kotlin Evolution (The Kotlin language Reference)</a></li>
                     <li><a href="https://semver.org/" target="_blank">Semantic Versioning 2.0.0</a></li>
                 </ul>
                 <p>Created with <a href="https://revealjs.com/" target="_blank">Reveal.js</a></p>
