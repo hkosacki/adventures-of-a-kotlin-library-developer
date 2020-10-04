@@ -490,6 +490,26 @@
                         * we can reference it without any overhead
                     </aside>
                 </section>
+                <section>
+                    <h4>Compatibility between Kotlin versions</h4>
+                    <p>
+                        <ul>
+                            <li class="fragment fade-in">As the language evolves, it is being updated constantly</li>
+                            <li class="fragment fade-in">New features are added, some change behaviour</li>
+                            <li class="fragment fade-in">JetBrains publishes the "Compatibility Guide" between Kotlin versions</li>
+                        </ul>
+                    </p>
+                    <p class="fragment fade-in">Further reading: <a href="https://kotlinlang.org/docs/reference/evolution/kotlin-evolution.html">Kotlin Evolution</a></p>
+                    <aside class="notes" data-markdown>
+                        * As Kotlin evolves, it has an incremental growth between versions
+                        * Similar thing with building libraries: APIs grow, change
+                        * This leads to changes in the language: its compatibility (source, binary, behavioral)
+                        ** Source: source-incompatible change stops code that used to compile fine (without errors or warnings) from compiling anymore
+                        ** Binary: two binary artifacts are said to be binary-compatible if interchanging them doesn't lead to loading or linkage errors
+                        ** Behavioral: a change is said to be behavioral-incompatible if one and the same program demonstrates different behavior before and after applying the change
+                        * In order to make the transition between versions smooth, JetBrains lists all the changes all of the 3 kinds mentioned before, so you can always make sure if you are affected by them or not. They are rather some edge cases that won't happen to all, but it is always worth checking whether your code will work the same as before.
+                    </aside>
+                </section>
             </section>
 
             <!-- APPENDIX - semantic versioning -->
