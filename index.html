@@ -177,10 +177,30 @@
                 </section>
                 <section>
                     <h5>The rule of thumb</h5>
-                    <img src="img/01-cannot_be_unseen.jpg" class="fragment fade-in" data-fragment-index=1/>
-                    <p class="fragment fade-in source" data-fragment-index=1>https://informatiesec.files.wordpress.com/2011/09/cannot_be_unseen.jpg</p>
+                    <p class="fragment fade-in source" data-fragment-index=1><img src="img/01-cannot_be_unseen-small.jpg" class="fragment fade-in" data-fragment-index=1/>
+                        <br />
+                        https://informatiesec.files.wordpress.com/2011/09/cannot_be_unseen.jpg</p>
                     <h4 class="fragment fade-in">What you have exposed, cannot be un-exposed</h4>
-                </section><section>
+                    <p class="fragment fade-in source" style="text-align: right;">…Kotlin 1.4 to the rescue!</p>
+                </section>
+                
+                <section>
+                    <h6>The "Library mode"</h4>
+                        <p class="fragment fade-in" style="text-align: left;">
+                        Forces explicit:
+                        <ul>
+                            <li class="fragment fade-in">visibility modifiers for members that are <span class="inline-code">public</span> by default;</li>
+                            <li class="fragment fade-in">type declarations for member fields and functions return values.</li>
+                        </ul>
+                    </p>
+                    <p class="fragment fade-in" style="text-align: left;">
+                        Depending on the check type, detected issues may result in <span class="inline-code" style="background-color: #51503B;">warnings</span> or <span class="inline-code" style="text-decoration-line: underline; text-decoration-style: wavy;text-decoration-color: red;">compile time errors</span>.
+                    </p>
+                    <p class="fragment fade-in">Read more: <a href="https://kotlinlang.org/docs/reference/whatsnew14.html#explicit-api-mode-for-library-authors">Explicit API mode for library authors</a></p>
+                </section>
+                
+                
+                <section>
                     <h4>Enjoy your raw stuff ;)</h4>
                     <img src="img/01-tartare.jpeg" />
                     <span class="source">https://pxhere.com/en/photo/643053</span>
